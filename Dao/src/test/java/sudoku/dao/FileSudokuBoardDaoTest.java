@@ -9,6 +9,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import sudoku.dao.factories.SudokuBoardDaoFactory;
 import sudoku.dao.interfaces.Dao;
+import sudoku.dao.exceptions.SudokuReadException;
 import sudoku.model.exceptions.FillingBoardSudokuException;
 import sudoku.model.models.SudokuBoard;
 import sudoku.model.solver.BacktrackingSudokuSolver;
@@ -68,6 +69,16 @@ public class FileSudokuBoardDaoTest {
             Assertions.fail();
         }
 
+    }
+    
+    @Test
+    public void testReadInvalidFile() {
+    	final String boardName = "smile.webp";
+        try (Dao<SudokuBoard> dao = SudokuBoardDaoFactory.createSudokuBoardDao(TEST_DIRECTORY)) {
+            assertThrows(SudokuReadException.class, () -> dao.read(boardName));
+        } catch (Exception e) {
+            Assertions.fail();
+        }
     }
 
 }
